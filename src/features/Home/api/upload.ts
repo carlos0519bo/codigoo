@@ -1,18 +1,30 @@
 import { useMutation } from '@tanstack/react-query';
 import { codigooApi, MutationConfig } from '@/lib';
-import { UploadData } from '../types';
-
 
 const url = '/upload';
 
+interface UploadData {
+  autor: string;
+  ano: string;
+  titulo: string;
+  formato: string;
+  image: File;
+  ficha: File;
+}
+
 function upload({ autor, ano, titulo, formato, image, ficha }: UploadData) {
-  return codigooApi.post(url, {
-    autor,
-    ano,
-    titulo,
-    formato,
-    image,
-    ficha,
+  const formData = new FormData();
+  formData.append('autor', autor);
+  formData.append('ano', ano);
+  formData.append('titulo', titulo);
+  formData.append('formato', formato);
+  formData.append('image', image);
+  formData.append('ficha', ficha);
+
+  return codigooApi.post(url, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 }
 

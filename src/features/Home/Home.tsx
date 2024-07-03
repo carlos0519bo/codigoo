@@ -10,6 +10,7 @@ import { Drawer, Input, Loader, Modal } from '@/components';
 import { formUploadSchema } from './utils';
 import { UploadData } from './types';
 import { useUpload } from './api';
+import { useUser } from '../Auth';
 
 const intialValues: UploadData = {
   autor: '',
@@ -27,6 +28,7 @@ export const Home = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [aditionalDoc, setAditionalDoc] = useState<File | null>(null);
   const [aditionalDocUri, setAditionalDocUri] = useState<string | null>(null);
+  const { data: user } = useUser();
   const { mutate: upload, isPending: uploadPending } = useUpload();
 
   const openDrawer = () => setIsDrawerOpen(true);
@@ -96,16 +98,8 @@ export const Home = () => {
         ano,
         titulo,
         formato,
-        image: {
-          uri: imageUri || '',
-          type: file?.type || '',
-          name: file?.name || '',
-        },
-        ficha: {
-          uri: aditionalDocUri || '',
-          type: aditionalDoc?.type || '',
-          name: aditionalDoc?.name || '',
-        },
+        image: file as File,
+        ficha: aditionalDoc as File,
       },
       {
         onSuccess: () => {
@@ -134,8 +128,8 @@ export const Home = () => {
             <h1 className="mt-4 text-[2rem]  md:text-[3rem] leading-7 font-extralight">
               ¡hola
             </h1>
-            <p className="mt-4 leading-7 text-gray-200 font-bold text-[2rem]  md:text-[3rem] lg:text-[4rem]">
-              Carlos!
+            <p className="mt-4 leading-7 text-gray-200 font-bold text-[2rem]  md:text-[3rem] lg:text-[4rem] capitalize">
+              {user?.name}!
             </p>
           </div>
           <h3 className="text-2xl hidden md:flex lg:text-4xl leading-normal font-extrabold tracking-tight text-gray-200">
@@ -177,8 +171,8 @@ export const Home = () => {
                   <button
                     className="bg-black text-white px-4 py-2 w-full rounded-2xl"
                     onClick={() => {
-                      setFile(null)
-                      setAditionalDoc(null)
+                      setFile(null);
+                      setAditionalDoc(null);
                     }}
                   >
                     Empezar de nuevo
