@@ -27,7 +27,6 @@ export const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [aditionalDoc, setAditionalDoc] = useState<File | null>(null);
-  const [aditionalDocUri, setAditionalDocUri] = useState<string | null>(null);
   const { data: user } = useUser();
   const { mutate: upload, isPending: uploadPending } = useUpload();
 
@@ -72,8 +71,6 @@ export const Home = () => {
     const file = event.target.files?.[0];
     if (file) {
       setAditionalDoc(file);
-      const fileURL = URL.createObjectURL(file);
-      setAditionalDocUri(fileURL);
     }
   };
 
@@ -106,7 +103,6 @@ export const Home = () => {
           setFile(null);
           setImageUri(null);
           setAditionalDoc(null);
-          setAditionalDocUri(null);
           openModal();
         },
         onError: (error) => {
