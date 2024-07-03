@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Form, Formik } from 'formik';
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 import { FileUpload } from './components';
@@ -27,9 +28,10 @@ export const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [aditionalDoc, setAditionalDoc] = useState<File | null>(null);
-  const [aditionalDocUri, setAditionalDocUri] = useState<string | null>(null);
   const { data: user } = useUser();
   const { mutate: upload, isPending: uploadPending } = useUpload();
+
+  console.log('Componente Home renderizado');
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -42,13 +44,50 @@ export const Home = () => {
   const fileInputAccessGallerryRef = useRef<HTMLInputElement>(null);
   const additionalDocumentRef = useRef<HTMLInputElement>(null);
 
-  const handleVideoIconClick = () => {
-    fileInputVideoRef.current?.click();
+  const handleVideoIconClick = async () => {
+    try {
+      const video = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+        saveToGallery: true,
+      });
+      
+      if (video.webPath) {
+        const response = await fetch(video.webPath);
+        const blob = await response.blob();
+        const file = new File([blob], "video.mp4", { type: "video/mp4" });
+        
+        setFile(file);
+        setImageUri(video.webPath);
+      }
+    } catch (error) {
+      console.error('Error al grabar el video:', error);
+    }
     closeDrawer();
   };
 
-  const handlePhotoIconClick = () => {
-    fileInputPhotoRef.current?.click();
+  const handlePhotoIconClick = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera
+      });
+      
+      if (image.webPath) {
+        const response = await fetch(image.webPath);
+        const blob = await response.blob();
+        const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+        
+        setFile(file);
+        setImageUri(image.webPath);
+      }
+    } catch (error) {
+      console.error('Error al tomar la foto:', error);
+    }
     closeDrawer();
   };
 
@@ -72,8 +111,6 @@ export const Home = () => {
     const file = event.target.files?.[0];
     if (file) {
       setAditionalDoc(file);
-      const fileURL = URL.createObjectURL(file);
-      setAditionalDocUri(fileURL);
     }
   };
 
@@ -106,7 +143,6 @@ export const Home = () => {
           setFile(null);
           setImageUri(null);
           setAditionalDoc(null);
-          setAditionalDocUri(null);
           openModal();
         },
         onError: (error) => {
