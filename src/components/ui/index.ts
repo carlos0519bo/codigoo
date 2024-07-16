@@ -1,4 +1,5 @@
 export * from './checkbox';
+export * from './button';
 export * from './drawer';
 export * from './loader';
 export * from './select';

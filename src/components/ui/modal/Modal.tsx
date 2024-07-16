@@ -7,6 +7,7 @@ interface ModalProps {
   title?: string;
   children: React.ReactNode;
   infoIcon?: boolean;
+  className?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -15,6 +16,7 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   children,
   infoIcon = false,
+  className,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-xl p-6 m-4 max-w-xl w-full"
+        className={`bg-white rounded-lg shadow-xl p-6 m-4 max-w-xl w-full ${className}`}
       >
         <div className="flex justify-between items-center mb-4">
           {title && (

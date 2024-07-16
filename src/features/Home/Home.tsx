@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
-import { FileUpload } from './components';
+import { CameraModal, FileUpload } from './components';
 import { FaCamera } from 'react-icons/fa';
 import { GrGallery } from 'react-icons/gr';
 import { RiVideoAddFill } from 'react-icons/ri';
@@ -27,8 +27,12 @@ export const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [aditionalDoc, setAditionalDoc] = useState<File | null>(null);
+  const [openCamera, setOpenCamera] = useState(true);
   const { data: user } = useUser();
   const { mutate: upload, isPending: uploadPending } = useUpload();
+
+  const openModalCamera = () => setOpenCamera(true);
+  const closeModalCamera = () => setOpenCamera(false);
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -141,8 +145,21 @@ export const Home = () => {
           )}
           <div className="flex-grow grid grid-cols-1 md:grid-cols-12 mt-5 w-full lg:gap-10">
             <div className="w-full md:col-span-12 lg:col-span-4 text-white">
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex flex-col gap-4">
                 {!file && <FileUpload onFileSelect={onFileSelect} />}
+                {!file && (
+                  <div className="mt-4">
+                    <h1 className="text-2xl font-extrabold text-gray-600">
+                      Tomar fotografía
+                    </h1>
+                    <div
+                      className="w-full h-24 bg-slate-300 rounded-xl flex items-center justify-center mt-2 cursor-pointer"
+                      onClick={openModalCamera}
+                    >
+                      <FaCamera size={32} color="black" />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {!file ? (
@@ -364,6 +381,13 @@ export const Home = () => {
           </button>
         </div>
       </Modal>
+      <CameraModal
+        isModalOpen={openCamera}
+        onClose={closeModalCamera}
+        setOpenCamera={setOpenCamera}
+        setImageUrl={setImageUri}
+        setFile={setFile}
+      />
     </main>
   );
 };
