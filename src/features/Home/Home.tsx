@@ -27,7 +27,7 @@ export const Home = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [aditionalDoc, setAditionalDoc] = useState<File | null>(null);
-  const [openCamera, setOpenCamera] = useState(true);
+  const [openCamera, setOpenCamera] = useState(false);
   const { data: user } = useUser();
   const { mutate: upload, isPending: uploadPending } = useUpload();
 
@@ -107,6 +107,7 @@ export const Home = () => {
           setFile(null);
           setImageUri(null);
           setAditionalDoc(null);
+          setOpenCamera(false);
           openModal();
         },
         onError: (error) => {
