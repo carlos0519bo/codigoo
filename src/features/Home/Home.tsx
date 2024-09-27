@@ -53,12 +53,12 @@ export const Home = () => {
         source: CameraSource.Camera,
         saveToGallery: true,
       });
-      
+
       if (video.webPath) {
         const response = await fetch(video.webPath);
         const blob = await response.blob();
-        const file = new File([blob], "video.mp4", { type: "video/mp4" });
-        
+        const file = new File([blob], 'video.mp4', { type: 'video/mp4' });
+
         setFile(file);
         setImageUri(video.webPath);
       }
@@ -74,14 +74,14 @@ export const Home = () => {
         quality: 90,
         allowEditing: false,
         resultType: CameraResultType.Uri,
-        source: CameraSource.Camera
+        source: CameraSource.Camera,
       });
-      
+
       if (image.webPath) {
         const response = await fetch(image.webPath);
         const blob = await response.blob();
-        const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
-        
+        const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+
         setFile(file);
         setImageUri(image.webPath);
       }
@@ -291,15 +291,19 @@ export const Home = () => {
                     }}
                   >
                     <Form className="space-y-6">
-                      <Input label="Título" name="titulo" />
-                      <Input label="Autor" name="autor" />
+                      <Input label="Token Solicitado" name="titulo" />
+                      <Input label="Tu nombre" name="autor" />
                       <Input
-                        label="Año"
+                        label="Año de la solicitud"
                         name="ano"
                         type="number"
                         maxLength={4}
                       />
-                      <Input label="Formato" name="formato" />
+                      <Input
+                        label="Número de teléfono"
+                        name="formato"
+                        type="phone"
+                      />
                       <div className="">
                         <button
                           type="button"
