@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouteObject } from 'react-router-dom';
+import { createHashRouter, Navigate, RouteObject } from 'react-router-dom';
 
 import { routePaths } from './routerManager';
 import { PrivateLayout, PublicLayout } from '@/components';
@@ -6,21 +6,16 @@ import { Home, AuthPage } from '@/features';
 
 export const routes: RouteObject[] = [
   {
-    element: <PrivateLayout />,
-    children: [
-      {
-        path: routePaths.Home,
-        element: <Home />,
-      },
-      {
-        path: routePaths.About,
-        element: <>about</>,
-      },
-      {
-        path: routePaths.Contact,
-        element: <>Contact</>,
-      },
-    ],
+    path: '/',
+    element: <Navigate to={routePaths.Auth} replace />,
+  },
+  {
+    path: routePaths.Home,
+    element: (
+      <PrivateLayout>
+        <Home />
+      </PrivateLayout>
+    ),
   },
   {
     path: routePaths.Auth,
@@ -36,4 +31,4 @@ export const routes: RouteObject[] = [
   },
 ];
 
-export const router = createBrowserRouter(routes);
+export const router = createHashRouter(routes);

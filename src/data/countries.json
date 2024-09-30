@@ -1,5 +1,13 @@
 [
   {
+      "name": "Spain",
+      "code": "ES",
+      "emoji": "🇪🇸",
+      "unicode": "U+1F1EA U+1F1F8",
+      "image": "ES.svg",
+      "dial_code": "+34"
+  },
+  {
       "name": "Andorra",
       "code": "AD",
       "emoji": "🇦🇩",
@@ -502,14 +510,6 @@
       "unicode": "U+1F1EA U+1F1F7",
       "image": "ER.svg",
       "dial_code": "+291"
-  },
-  {
-      "name": "Spain",
-      "code": "ES",
-      "emoji": "🇪🇸",
-      "unicode": "U+1F1EA U+1F1F8",
-      "image": "ES.svg",
-      "dial_code": "+34"
   },
   {
       "name": "Ethiopia",
