@@ -42,30 +42,18 @@ export const Home = () => {
   const fileInputVideoRef = useRef<HTMLInputElement>(null);
   const fileInputPhotoRef = useRef<HTMLInputElement>(null);
   const fileInputAccessGallerryRef = useRef<HTMLInputElement>(null);
+  const fileInputAccessGallerryVideoRef = useRef<HTMLInputElement>(null);
   const additionalDocumentRef = useRef<HTMLInputElement>(null);
 
   const handleVideoIconClick = async () => {
     try {
-      const video = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
-        saveToGallery: true,
-      });
-
-      if (video.webPath) {
-        const response = await fetch(video.webPath);
-        const blob = await response.blob();
-        const file = new File([blob], 'video.mp4', { type: 'video/mp4' });
-
-        setFile(file);
-        setImageUri(video.webPath);
-      }
+      fileInputAccessGallerryVideoRef.current?.click();
+      setTimeout(()=>{
+        closeDrawer();
+      }, 3000)
     } catch (error) {
       console.error('Error al grabar el video:', error);
     }
-    closeDrawer();
   };
 
   const handlePhotoIconClick = async () => {
@@ -380,6 +368,13 @@ export const Home = () => {
         type="file"
         accept="image/png,image/jpeg,image/jpg,video/*"
         ref={fileInputAccessGallerryRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      <input
+        type="file"
+        accept="video/*"
+        ref={fileInputAccessGallerryVideoRef}
         onChange={handleFileChange}
         className="hidden"
       />
